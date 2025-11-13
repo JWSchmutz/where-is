@@ -19,11 +19,19 @@ h1 {
   color: #333;
 }
 
-form {
+form,
+#searchInput {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 input {
@@ -58,7 +66,7 @@ li {
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 }
 
@@ -67,9 +75,8 @@ li div {
   gap: 5px;
 }
 
-li span.locations {
-  display: block;
+li span.locations div {
+  margin-top: 2px;
   font-size: 0.9em;
   color: #555;
-  margin-top: 5px;
 }

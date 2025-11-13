@@ -2,14 +2,21 @@ const itemForm = document.getElementById("itemForm");
 const itemName = document.getElementById("itemName");
 const itemLocations = document.getElementById("itemLocations");
 const itemList = document.getElementById("itemList");
+const searchInput = document.getElementById("searchInput");
 
 // Load items from localStorage
 let items = JSON.parse(localStorage.getItem("houseItems")) || [];
 
-// Render items
-function renderItems() {
+// Render items (with optional filtering)
+function renderItems(filter = "") {
   itemList.innerHTML = "";
-  items.forEach((item, index) => {
+
+  // Sort items alphabetically by name
+  const sortedItems = [...items].sort((a, b) => a.name.localeCompare(b.name));
+
+  sortedItems.forEach((item, index) => {
+    if (!item.name.toLowerCase().includes(filter.toLowerCase())) return;
+
     const li = document.createElement("li");
 
     // Display each location on its own line
@@ -41,7 +48,6 @@ itemForm.addEventListener("submit", (e) => {
 
   if (!name || locations.length === 0) return;
 
-  // Editing
   if (itemForm.dataset.editIndex) {
     const index = itemForm.dataset.editIndex;
     items[index] = { name, locations };
@@ -52,7 +58,7 @@ itemForm.addEventListener("submit", (e) => {
 
   localStorage.setItem("houseItems", JSON.stringify(items));
   itemForm.reset();
-  renderItems();
+  renderItems(searchInput.value);
 });
 
 // Edit item
@@ -68,9 +74,14 @@ function deleteItem(index) {
   if (confirm("Are you sure you want to delete this item?")) {
     items.splice(index, 1);
     localStorage.setItem("houseItems", JSON.stringify(items));
-    renderItems();
+    renderItems(searchInput.value);
   }
 }
+
+// Search input
+searchInput.addEventListener("input", () => {
+  renderItems(searchInput.value);
+});
 
 // Initial render
 renderItems();
